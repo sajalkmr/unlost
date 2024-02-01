@@ -1,4 +1,5 @@
 import os
+import urllib.request
 
 from cs50 import SQL
 from flask import Flask, flash, jsonify, redirect, render_template, request, session, url_for
@@ -7,10 +8,9 @@ from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
-
 from helpers import apology, login_required, lookup, usd, check_username_exists, register_user, is_positive_integer, allowed_file, build_index_data
 
-import urllib.request
+
 
 # Configure application
 app = Flask(__name__)
@@ -43,7 +43,7 @@ Session(app)
 db = SQL("sqlite:///lostandfound.db")
 
 # item categories
-CATEGORIES = ["Pets", "Documents", "Phone", "Cash", "Debit/Credit Card", "Laptop", "Clothes", "Jewellery", "Purse", "Person", "Motorcycle", "Cycle", "Cars", "Others"]
+CATEGORIES = ["ID Card", "Documents", "Phone", "Debit/Credit Card", "Laptop", "Clothes", "Jewellery", "Wallet", "Headphones/Earbuds", "Bike", "Cycle", "Cars", "Calculator","Keys", "Others"]
 
 # Make sure API key is set
 # if not os.environ.get("API_KEY"):
@@ -222,6 +222,9 @@ def register():
         return render_template("register.html")
 
 
+
+
+
 @app.route("/post", methods=["GET", "POST"])
 @login_required
 def post():
@@ -253,13 +256,26 @@ def post():
     else:
         return render_template("post.html", categories = sorted(CATEGORIES))
 
+
+
+
+
+
 @app.route("/about", methods=["GET"])
 def about():
     return render_template("about.html")
 
+
+
+
+
 @app.route("/disclaimer", methods=["GET"])
 def disclaimer():
     return render_template("disclaimer.html")
+
+
+
+
 
 @app.route("/claim", methods=["GET", "POST"])
 @login_required
@@ -311,6 +327,11 @@ def claim():
 
     else:
         return apology("Page not found.", 404)
+
+
+
+
+
 
 @app.route("/message", methods=["GET", "POST"])
 @login_required
@@ -365,6 +386,10 @@ def message():
             return messages()
     else:
         return apology("Page not found.", 404)
+
+
+
+
 
 @app.route("/history")
 @login_required
@@ -453,6 +478,11 @@ def mark_claim():
     else:
         return apology("Page not found.", 404)
 
+
+
+
+
+
 @app.route("/messages", methods=["GET"])
 @login_required
 def messages():
@@ -489,6 +519,10 @@ def messages():
     return render_template("messages.html", data = data)
 
 
+
+
+
+
 @app.route("/message_form", methods=["GET", "POST"])
 @login_required
 def message_form():
@@ -499,27 +533,43 @@ def message_form():
         # Query database
         hash = {}
 
-        conn = db.execute("SELECT username from users where id = :sender_id", sender_id = session["user_id"])
-        hash["sender_name"] = conn[0]["username"]
+        # Query for sender's username
+        conn_sender = db.execute("SELECT username from users where id = :sender_id", sender_id=session["user_id"])
+        if conn_sender:
+            hash["sender_name"] = conn_sender[0]["username"]
+        else:
+            # Handle the case when sender information is not found
+            return apology("Sender information not found.", 404)
 
-        conn = db.execute("SELECT username from users where id = :receiver_id", receiver_id = receiver_id)
-        hash["receiver_name"] = conn[0]["username"]
-        hash["receiver_id"] = receiver_id
+        # Query for receiver's username
+        conn_receiver = db.execute("SELECT username from users where id = :receiver_id", receiver_id=receiver_id)
+        if conn_receiver:
+            hash["receiver_name"] = conn_receiver[0]["username"]
+            hash["receiver_id"] = receiver_id
+        else:
+            # Handle the case when receiver information is not found
+            return apology("Receiver information not found.", 404)
 
-        conn = db.execute("SELECT * from posts where post_id = :post_id and posts.status <> 'deleted' ", post_id = post_id)
-        hash["post_title"] = conn[0]["title"].title()
-        hash["post_type"] = conn[0]["type"].upper()
-        hash["post_status"] = conn[0]["status"].upper()
-        hash["date"] = conn[0]["date"]
-        hash["post_id"] = post_id
+        # Query for post details
+        conn_post = db.execute("SELECT * from posts where post_id = :post_id and posts.status <> 'deleted'", post_id=post_id)
+        if conn_post:
+            hash["post_title"] = conn_post[0]["title"].title()
+            hash["post_type"] = conn_post[0]["type"].upper()
+            hash["post_status"] = conn_post[0]["status"].upper()
+            hash["date"] = conn_post[0]["date"]
+            hash["post_id"] = post_id
+        else:
+            # Handle the case when post information is not found
+            return apology("Post information not found.", 404)
 
         hash["message_type"] = "chat"
 
-
-        return render_template("message_form.html", item = hash)
+        return render_template("message_form.html", item=hash)
 
     else:
         return apology("Page not found.", 404)
+
+
 
 
 @app.route("/delete_post", methods=["POST"])
@@ -534,6 +584,9 @@ def delete_post():
     flash("Post deleted successfully.")
     return history()
 
+
+
+
 @app.route("/deny_claim", methods=["POST"])
 @login_required
 def deny_claim():
@@ -545,6 +598,11 @@ def deny_claim():
 
     flash("Claim cancelled successfully.")
     return history()
+
+
+
+
+
 
 @app.route("/post_detail", methods=["POST"])
 @login_required
@@ -586,6 +644,9 @@ def post_detail():
         return apology("Page not found.", 404)
 
 
+
+
+
 def errorhandler(e):
     """Handle error"""
     if not isinstance(e, HTTPException):
@@ -621,6 +682,9 @@ def upload_image(request, image_id, type):
 		flash('Allowed image types are -> png, jpg, jpeg, gif')
 		return False
 		# return redirect(request.url)
-    
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -137,4 +137,4 @@ def build_index_data(rows):
 
         data.append(hash)
 
-    return data
+    return data # list of dictionaries

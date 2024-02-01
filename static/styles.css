@@ -1,9 +1,10 @@
-nav .navbar-brand
-{
+nav .navbar-brand {
     /* size for brand */
     font-size: xx-large;
 }
-html, body {
+
+html,
+body {
     background-color: #D0D4CA;
 }
 
@@ -13,20 +14,19 @@ body .navbar-custom {
 
 
 /* colors for brand */
-nav .navbar-brand .black
-{
+nav .navbar-brand .black {
     color: #061934;
 }
-nav .navbar-brand .red
-{
+
+nav .navbar-brand .red {
     color: #1e0c0b;
 }
-nav .navbar-brand .yellow
-{
+
+nav .navbar-brand .yellow {
     color: #211c0e;
 }
-nav .navbar-brand .green
-{
+
+nav .navbar-brand .green {
     color: rgb(14, 27, 17);
 }
 
@@ -36,8 +36,7 @@ nav .navbar-brand .green
     font-weight: 200 !important;
 }
 
-main .form-control
-{
+main .form-control {
     /* center form controls */
     display: inline-block;
 
@@ -49,33 +48,30 @@ main .form-control
     width: 100%;
 }
 
-main
-{
+main {
     /* scroll horizontally as needed */
     overflow-x: auto;
 
     /* center contents */
-     text-align: center;
+    text-align: center;
 }
 
-main img
-{
+main img {
     /* constrain images on small screens */
     max-width: 100%;
 }
 
-main table
-{
+main table {
     text-align: left;
 }
 
-main tfoot
-{
+main tfoot {
     font-weight: bold;
 }
 
-.mt-1, .my-1 {
-    margin-top: .25rem!important;
+.mt-1,
+.my-1 {
+    margin-top: .25rem !important;
 }
 
 .row {
@@ -118,14 +114,15 @@ main tfoot
 }
 
 .action-grid form {
-   padding-top: 80px;
+    padding-top: 80px;
 }
 
 .claim-btn .btn {
     float: right;
 }
 
-.header, .title-row {
+.header,
+.title-row {
     border-bottom: 1px solid #1e6dff26;
     padding-bottom: 4px;
     padding-top: 10px;
@@ -157,7 +154,7 @@ main tfoot
 
 .photo-grid {
     overflow: auto;
-    max-height: 200px;
+    
 }
 
 .post-container {
@@ -172,8 +169,9 @@ main tfoot
     border-bottom: 1px solid #2e2e2e26;
 }
 
-.post-content, .message-content {
-        padding: 15px 15px 0 15px;
+.post-content,
+.message-content {
+    padding: 15px 15px 0 15px;
 }
 
 .message-content .message {
@@ -231,8 +229,8 @@ footer {
     margin-top: -10px;
 }
 
-.filter-form .form-control, .filter-form button
-{
+.filter-form .form-control,
+.filter-form button {
     margin-right: 10px;
     margin-left: 10px !important;
 }

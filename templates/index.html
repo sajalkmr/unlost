@@ -13,11 +13,11 @@ Log In
 
     <div class="center">
 
-       
+
 
     </div>
 
-    
+
 
     <hr>
 
@@ -118,11 +118,17 @@ Log In
 
                             <hr>
 
+
+
+
+
+
                             <form action="/claim" method="post" onSubmit="return confirm('Do you want to submit?')">
                                 <div class="claim-btn btn-group">
                                     {% if item["user_id"] == session.user_id %}
                                     {% if item["status"] == "Unclaimed" %}
-                                    <button id="mark-btn" name="mark-btn" class="btn btn-primary" type="submit" value={{item["post_id"]}} hidden>
+                                    <button id="mark-btn" name="mark-btn" class="btn btn-primary" type="submit"
+                                        value={{item["post_id"]}} hidden>
                                         Mark as Claimed
                                     </button>
                                     {% elif item["status"] == "Claimed" %}
@@ -139,11 +145,11 @@ Log In
                                         class="btn btn-warning" type="submit" value={{item["post_id"]}}>
                                         Deny Claim
                                     </button>
-                                    <button id="mark-btn" name="mark-btn" class="btn btn-primary" type="submit" value={{item["post_id"]}}>
+                                    <button id="mark-btn" name="mark-btn" class="btn btn-primary" type="submit"
+                                        value={{item["post_id"]}}>
                                         Mark as Claimed
                                     </button>
                                     {% endif %}
-
                                     {% else %}
                                     {% if item["status"] == "Claimed" %}
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -154,15 +160,18 @@ Log In
                                             d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
                                     </svg>
                                     {% elif item["status"] == "Claim In Progress" %}
+                                    {% if item["claimed_by"] == session.user_id %}
                                     <button id="deny-btn" formaction="/deny_claim"
                                         onSubmit="return confirm('Do you want to submit?')" name="deny-btn"
-                                        class="btn btn-warning" type="submit" value={{item["post_id"] }}>
+                                        class="btn btn-warning" type="submit" value={{item["post_id"]}}>
                                         Cancel Claim
                                     </button>
+                                    {% else %}
                                     <button id="claim-btn" name="claim-btn" class="btn btn-primary" type="submit"
-                                        value={{item["post_id"]}} hidden>
+                                        value={{item["post_id"]}} disabled>
                                         Claim in Progress
                                     </button>
+                                    {% endif %}
                                     {% else %}
                                     <button id="claim-btn" name="claim-btn" class="btn btn-primary" type="submit"
                                         value={{item["post_id"]}}>
@@ -170,7 +179,6 @@ Log In
                                     </button>
                                     {% endif %}
                                     {% endif %}
-
                                 </div>
                             </form>
                         </div>
